@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrusel Completo - Veka Pijamas</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e8ebed;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .presentation-wrapper {
+            display: flex;
+            gap: 30px;
+            /* Escala reducida para que las dos imágenes quepan en la pantalla */
+            transform: scale(0.75); 
+            transform-origin: center center;
+            width: max-content;
+        }
+
+        .post-container {
+            width: 470px;
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        /* Cabecera del post */
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+        }
+
+        .user-info-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: url() center/cover;
+            border: 1px solid #dbdbdb;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username {
+            font-size: 14px;
+            font-weight: 600;
+            color: #262626;
+        }
+
+        .sponsored {
+            font-size: 12px;
+            color: #8e8e8e;
+            font-weight: 400;
+        }
+
+        .more-options svg {
+            width: 24px;
+            height: 24px;
+            fill: #262626;
+        }
+
+        /* DISEÑO EDITORIAL (PIEZA GRÁFICA) */
+        .ad-creative {
+            width: 470px;
+            height: 470px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background-color: #FDFBF7;
+        }
+
+        /* Mitad superior: Fotos dinámicas según la diapositiva */
+        .image-half-1 {
+            height: 55%;
+            /* Mantiene tu imagen local generada por IA */
+            background: url('Imagen 1.jpg') center/cover;
+            position: relative;
+        }
+
+        .image-half-2 {
+            height: 55%;
+            /* Enlace actualizado para la segunda imagen del carrusel */
+            background: url('Imagen 2.jpg') center/cover;
+            position: relative;
+        }
+
+        .carousel-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .quality-badge {
+            position: absolute;
+            bottom: -25px;
+            right: 25px;
+            background-color: #8C6239;
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(140, 98, 57, 0.4);
+            border: 3px solid #FDFBF7;
+            z-index: 5;
+        }
+        
+        .quality-badge span {
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        /* Mitad inferior: Textos legibles */
+        .text-half {
+            height: 45%;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .text-half h2 {
+            font-family: 'Georgia', serif;
+            color: #2C2825;
+            font-size: 30px;
+            margin: 0 0 10px 0;
+            line-height: 1.2;
+        }
+
+        .text-half p {
+            font-family: 'Helvetica', sans-serif;
+            color: #5A544F;
+            font-size: 14px;
+            margin: 0 0 20px 0;
+            line-height: 1.4;
+            max-width: 90%;
+        }
+
+        .ad-btn {
+            background-color: #2C2825;
+            color: #FDFBF7;
+            align-self: flex-start;
+            padding: 10px 22px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ad-btn.whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+        }
+
+        /* Banner nativo de Meta Ads */
+        .meta-cta-bar {
+            background-color: #f5fcf8;
+            border-top: 1px solid #dbdbdb;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meta-cta-text {
+            color: #25D366;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .meta-cta-bar svg {
+            width: 16px;
+            height: 16px;
+            stroke: #25D366;
+            stroke-width: 2;
+        }
+
+        /* Interacciones */
+        .post-actions {
+            padding: 12px 16px 8px;
+        }
+
+        .action-icons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .left-icons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .action-icons svg {
+            width: 24px;
+            height: 24px;
+            fill: transparent;
+            stroke: #262626;
+            stroke-width: 2;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: -30px; 
+            margin-bottom: 15px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #dbdbdb;
+        }
+
+        .dot.active {
+            background-color: #0095f6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-wrapper">
+        
+        <!-- ================= DIAPOSITIVA 1 ================= -->
+        <div class="post-container">
+            <div class="post-header">
+                <div class="user-info-header">
+                    <div class="avatar"></div>
+                    <div class="user-details">
+                        <span class="username">vekapijamas</span>
+                        <span class="sponsored">Publicidad</span>
+                    </div>
+                </div>
+                <div class="more-options">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"></circle><circle cx="6" cy="12" r="1.5"></circle><circle cx="18" cy="12" r="1.5"></circle></svg>
+                </div>
+            </div>
+
+            <div class="ad-creative">
+                <div class="image-half-1">
+                    <div class="carousel-indicator">1/2</div>
+                    <div class="quality-badge">
+                        <span>★</span>
+                        Calidad<br>Premium
+                    </div>
+                </div>
+                
+                <div class="text-half">
+                    <h2>Telas suaves para tu descanso.</h2>
+                    <p>Comodidad que perdura. Diseñadas con materiales de alta calidad para garantizar noches de verdadero descanso.</p>
+                    <div class="ad-btn">Desliza para ver más →</div>
+                </div>
+            </div>
+
+            <div class="meta-cta-bar">
+                <span class="meta-cta-text">Enviar mensaje de WhatsApp</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="post-actions">
+                <div class="action-icons">
+                    <div class="left-icons">
+                        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    </div>
+                    <div class="right-icon">
+                        <svg viewBox="0 0 24 24"><polygon points="19 21 12 16 5 21 5 3 19 3 19 21"></polygon></svg>
+                    </div>
+                </div>
+                
+                <!-- Puntos: El primero está activo -->
+                <div class="dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= DIAPOSITIVA 2 ================= -->
+        <div class="post-container">
+            <div class="post-header">
+                <div class="user-info-header">
+                    <div class="avatar"></div>
+                    <div class="user-details">
+                        <span class="username">vekapijamas</span>
+                        <span class="sponsored">Publicidad</span>
+                    </div>
+                </div>
+                <div class="more-options">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.5"></circle><circle cx="6" cy="12" r="1.5"></circle><circle cx="18" cy="12" r="1.5"></circle></svg>
+                </div>
+            </div>
+
+            <div class="ad-creative">
+                <div class="image-half-2">
+                    <div class="carousel-indicator">2/2</div>
+                </div>
+                
+                <div class="text-half">
+                    <h2>Encuentra tu horma perfecta.</h2>
+                    <p>Disponibilidad en todas las tallas. ¿Tienes dudas? Nuestro equipo te asesora personalmente para elegir la indicada.</p>
+                    <a href="#" class="ad-btn whatsapp-btn">
+                        <svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:white;"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+                        Elegir mi talla
+                    </a>
+                </div>
+            </div>
+
+            <div class="meta-cta-bar">
+                <span class="meta-cta-text">Enviar mensaje de WhatsApp</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <div class="post-actions">
+                <div class="action-icons">
+                    <div class="left-icons">
+                        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    </div>
+                    <div class="right-icon">
+                        <svg viewBox="0 0 24 24"><polygon points="19 21 12 16 5 21 5 3 19 3 19 21"></polygon></svg>
+                    </div>
+                </div>
+                
+                <!-- Puntos: El segundo está activo -->
+                <div class="dots">
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
